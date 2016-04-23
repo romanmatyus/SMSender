@@ -30,7 +30,8 @@ before_script:
     - composer create-project nette/code-checker code-checker ~2.3 --no-interaction --prefer-source
     - php code-checker/src/code-checker.php -d src
     - php code-checker/src/code-checker.php -d tests
-    - printf "eurosms:\n\tid: $EUROSMSID\n\tkey: $EUROSMSKEY\n">tests/secret.neon
+    - |
+        printf "eurosms:\n\tid: $EUROSMSID\n\tkey: $EUROSMSKEY\n" > tests/secret.neon
     - if [[ $TRAVIS_PHP_VERSION == '5.6' ]] && [[ $NETTE == 'nette-2.3' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then FLAGS="-d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src"; fi;
 
 script:
