@@ -44,7 +44,7 @@ class SMSenderExtension extends CompilerExtension
 		if ($config['message']['signature']) {
 			$sender->addSetup('$service->onBeforeSend[] = function ($message) { $message->setText($message->getText() . ?); };', [$config['message']['signature']]);
 		}
-					
+
 		$builder->addDefinition($this->prefix('messageFactory'))
 			->setClass($config['messageFactoryClass'])
 			->addSetup('$class', [$config['messageClass']])
@@ -61,5 +61,4 @@ class SMSenderExtension extends CompilerExtension
 			$compiler->addExtension('smsender', new SMSenderExtension());
 		};
 	}
-
 }
