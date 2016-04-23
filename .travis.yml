@@ -1,10 +1,15 @@
 language: php
 
+sudo: false
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
 env:
     matrix:
-        - NETTE=nette-2.3-dev COMPOSER_EXTRA_ARGS=""
-        - NETTE=nette-2.3 COMPOSER_EXTRA_ARGS=""
-        - NETTE=nette-2.3 COMPOSER_EXTRA_ARGS="--prefer-lowest"
+        - NETTE=nette-2.3-dev
+        - NETTE=nette-2.3
 
 php:
     - 5.5
@@ -13,6 +18,9 @@ php:
     - hhvm
 
 matrix:
+    include:
+        - php: 5.6
+          env: NETTE=nette-2.3 COMPOSER_EXTRA_ARGS="--prefer-lowest --prefer-stable"
     allow_failures:
         - php: hhvm
 
@@ -35,7 +43,7 @@ before_script:
     - if [[ $TRAVIS_PHP_VERSION == '5.6' ]] && [[ $NETTE == 'nette-2.3' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then FLAGS="-d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src"; fi;
 
 script:
-    - vendor/bin/tester tests -s -c tests/php-unix.ini $FLAGS
+    - vendor/bin/tester tests -s -p php -c tests/php-unix.ini $FLAGS
 
 after_script:
     - |
