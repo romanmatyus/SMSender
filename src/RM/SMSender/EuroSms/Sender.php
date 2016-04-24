@@ -7,6 +7,7 @@ use RM;
 use RM\SMSender\BaseSender;
 use RM\SMSender\ISender;
 use RM\SMSender\IMessage;
+use RM\SMSender\Exception;
 use RM\SMSender\ConfigurationException;
 use RM\SMSender\GatewayException;
 use RM\SMSender\MissingParameterException;
@@ -15,7 +16,7 @@ use RM\SMSender\MissingParameterException;
  * Sender for service EuroSms.sk
  * @method onBeforeSend(IMessage $message)
  * @method onSuccess(IMessage $message, $response)
- * @method onError(IMessage $message, $response)
+ * @method onError(IMessage $message, $response, Exception $e)
  */
 class Sender extends BaseSender implements ISender
 {
