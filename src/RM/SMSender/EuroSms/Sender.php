@@ -13,6 +13,9 @@ use RM\SMSender\MissingParameterException;
 
 /**
  * Sender for service EuroSms.sk
+ * @method onBeforeSend(IMessage $message)
+ * @method onSuccess(IMessage $message, $response)
+ * @method onError(IMessage $message, $response)
  */
 class Sender extends BaseSender implements ISender
 {
@@ -72,7 +75,7 @@ class Sender extends BaseSender implements ISender
 	 * @param  Message $message
 	 * @return string
 	 */
-	public function getSignature(Message $message)
+	public function getSignature(IMessage $message)
 	{
 		return substr(md5($this->key . str_replace('+', '', $message->getTo())), 10, 11);
 	}
@@ -107,7 +110,7 @@ class Sender extends BaseSender implements ISender
 	 * @throws MissingParameterException
 	 * @return bool
 	 */
-	private function check(Message $message)
+	private function check(IMessage $message)
 	{
 		if (empty($message->getTo()))
 			throw new MissingParameterException('Message has empty recipent number. Use method setTo().');
