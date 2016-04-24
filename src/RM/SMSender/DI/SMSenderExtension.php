@@ -29,7 +29,7 @@ class SMSenderExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$config = $this->validateConfig($this->defaults);
+		$config = (array) $this->validateConfig($this->defaults);
 
 		$sender = $builder->addDefinition($this->prefix('sender'))
 			->setClass($config['senderClass']);
