@@ -57,7 +57,7 @@ class Sender extends BaseSender implements ISender
 				'd' => 1,
 				'sender' => $message->getFrom(),
 				'number' => $message->getTo(),
-				'msg' => urlencode($message->getText()),
+				'msg' => $message->getText(),
 			])));
 		$response = $res->getBody();
 		if ($this->isSuccess($response)) {
