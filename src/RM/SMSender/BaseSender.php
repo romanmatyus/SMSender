@@ -5,7 +5,6 @@ namespace RM\SMSender;
 use GuzzleHttp;
 use Nette\Object;
 use Nette\Utils\Strings;
-use RM\SMSender\ISender;
 
 /**
  * Base Sender
