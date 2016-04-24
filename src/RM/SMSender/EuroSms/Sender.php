@@ -112,10 +112,10 @@ class Sender extends BaseSender implements ISender
 	 */
 	private function check(IMessage $message)
 	{
-		if (empty($message->getTo()))
-			throw new MissingParameterException('Message has empty recipent number. Use method setTo().');
 		if (empty($message->getFrom()))
 			throw new MissingParameterException('Message has empty sender. Use method setFrom().');
+		if (empty($message->getTo()))
+			throw new MissingParameterException('Message has empty recipent number. Use method setTo().');
 		if (empty($message->getText()))
 			throw new MissingParameterException('Message has empty text. Use method setText().');
 		return TRUE;

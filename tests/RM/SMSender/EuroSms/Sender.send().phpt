@@ -10,9 +10,6 @@ use Tester\Assert;
 require __DIR__ . '/../../../bootstrap.php';
 
 $message = new RM\SMSender\EuroSms\Message;
-$message->setFrom('Tester')
-	->setTo('+421900123456')
-	->setText('Text');
 
 $config = Neon::decode(file_get_contents(__DIR__ . '/../../../secret.neon'));
 
@@ -22,6 +19,24 @@ $sender->config([
 	'id' => '1-JA67XG',
 	'key' => '12345678',
 ]);
+
+Assert::exception(function() use ($sender, $message) {
+	$sender->send($message);
+}, 'RM\SMSender\MissingParameterException', 'Message has empty sender. Use method setFrom().');
+
+$message->setFrom('Tester');
+
+Assert::exception(function() use ($sender, $message) {
+	$sender->send($message);
+}, 'RM\SMSender\MissingParameterException', 'Message has empty recipent number. Use method setTo().');
+
+$message->setTo('+421900123456');
+
+Assert::exception(function() use ($sender, $message) {
+	$sender->send($message);
+}, 'RM\SMSender\MissingParameterException', 'Message has empty text. Use method setText().');
+
+$message->setText('Text');
 
 Assert::exception(function() use ($sender, $message) {
 	$sender->send($message);
