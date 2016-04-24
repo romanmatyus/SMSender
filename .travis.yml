@@ -8,8 +8,9 @@ cache:
 
 env:
     matrix:
-        - NETTE=nette-2.3-dev
-        - NETTE=nette-2.3
+        - COMPOSER_EXTRA_ARGS=""
+        - COMPOSER_EXTRA_ARGS="--prefer-lowest  --prefer-stable"
+
 
 php:
     - 5.5
@@ -18,9 +19,6 @@ php:
     - hhvm
 
 matrix:
-    include:
-        - php: 5.6
-          env: NETTE=nette-2.3 COMPOSER_EXTRA_ARGS="--prefer-lowest --prefer-stable"
     allow_failures:
         - php: hhvm
 
@@ -29,8 +27,6 @@ before_install:
 
 install:
     - mkdir -p vendor/bin
-    - wget -O vendor/bin/composer-nette https://raw.githubusercontent.com/Kdyby/TesterExtras/master/bin/composer-nette.php
-    - php vendor/bin/composer-nette
     - composer update --no-interaction --prefer-source $COMPOSER_EXTRA_ARGS
 
 before_script:
@@ -40,14 +36,14 @@ before_script:
     - php code-checker/src/code-checker.php -d tests
     - |
         printf "eurosms:\n\tid: $EUROSMSID\n\tkey: $EUROSMSKEY\n" > tests/secret.neon
-    - if [[ $TRAVIS_PHP_VERSION == '5.6' ]] && [[ $NETTE == 'nette-2.3' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then FLAGS="-d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src"; fi;
+    - if [[ $TRAVIS_PHP_VERSION == '7.0' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then FLAGS="-d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src"; fi;
 
 script:
     - vendor/bin/tester tests -s -p php -c tests/php-unix.ini $FLAGS
 
 after_script:
     - |
-        if [[ $TRAVIS_PHP_VERSION == '5.6' ]] && [[ $NETTE == 'nette-2.3' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then
+        if [[ $TRAVIS_PHP_VERSION == '7.0' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then
             wget https://scrutinizer-ci.com/ocular.phar
             php ocular.phar code-coverage:upload --format=php-clover coverage.xml
         fi
