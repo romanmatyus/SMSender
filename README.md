@@ -93,7 +93,7 @@ class SmsPresenter extends Presenter
 	{
 		$message = $this->messageFactory->create();
 		$message->setFrom('Example.com')
-			->setNumber($to)
+			->setTo($to)
 			->setMessage($text);
 		try {
 			$this->SMSender->send($message);
