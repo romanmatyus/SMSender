@@ -26,7 +26,10 @@ file_put_contents($tempConfig, Neon::encode([
 			'setFrom' => 'Example.com',
 			'signature' => ' -- Example.com',
 		],
-	]
+	],
+	'services' => [
+		'Nette\Caching\Storages\DevNullStorage',
+	],
 ]));
 
 $config = new Nette\Configurator;
