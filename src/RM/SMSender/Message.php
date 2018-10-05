@@ -10,64 +10,43 @@ use RM\SMSender\IMessage;
 class Message implements IMessage
 {
 	/** @var string */
-	protected $from;
+	protected $from = '';
 
 	/** @var string */
-	protected $to;
+	protected $to = '';
 
 	/** @var string */
-	protected $text;
+	protected $text = '';
 
-	/**
-	 * @param  string $from
-	 * @return self
-	 */
-	public function setFrom($from)
+	public function setFrom(string $from) : IMessage
 	{
 		$this->from = $from;
 		return $this;
 	}
 
-	/**
-	 * @param  string $number
-	 * @return self
-	 */
-	public function setTo($number)
+	public function setTo(string $number) : IMessage
 	{
 		$this->to = $number;
 		return $this;
 	}
 
-	/**
-	 * @param  string $text
-	 * @return self
-	 */
-	public function setText($text)
+	public function setText(string $text) : IMessage
 	{
 		$this->text = $text;
 		return $this;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getFrom()
+	public function getFrom() : string
 	{
 		return $this->from;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getTo()
+	public function getTo() : string
 	{
 		return $this->to;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getText()
+	public function getText() : string
 	{
 		return $this->text;
 	}

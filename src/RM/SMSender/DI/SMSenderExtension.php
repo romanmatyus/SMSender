@@ -13,7 +13,7 @@ use Nette\DI\Helpers;
  */
 class SMSenderExtension extends CompilerExtension
 {
-	/** @var [] */
+	/** @var array */
 	public $defaults = [
 		'config' => [],
 		'senderClass' => 'RM\SMSender\EuroSms\Sender',
@@ -30,7 +30,7 @@ class SMSenderExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$config = (array) $this->validateConfig($this->defaults);
+		$config = $this->validateConfig($this->defaults);
 
 		$sender = $builder->addDefinition($this->prefix('sender'))
 			->setClass($config['senderClass']);

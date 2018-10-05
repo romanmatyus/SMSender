@@ -49,7 +49,6 @@ class Sender extends BaseSender implements ISender
 	}
 
 	/**
-	 * @param  IMessage $message
 	 * @throws RM\SMSender\Exception
 	 * @return bool|string ID of Message
 	 */
@@ -79,22 +78,14 @@ class Sender extends BaseSender implements ISender
 			: substr(Strings::trim((string)$response), 3);
 	}
 
-	/**
-	 * @param  Message $message
-	 * @return string
-	 */
-	public function getSignature(IMessage $message)
+	public function getSignature(IMessage $message) : string
 	{
 		return substr(md5($this->key . str_replace('+', '', $message->getTo())), 10, 11);
 	}
 
-	/**
-	 * @param  string  $response
-	 * @return boolean
-	 */
-	public function isSuccess($response)
+	public function isSuccess(string $response)
 	{
-		$response = Strings::trim((string)$response);
+		$response = Strings::trim($response);
 		return ($this->debug && $response === 'SMSValid') || (!$this->debug && substr($response, 0, 2) === 'ok');
 	}
 
@@ -114,11 +105,9 @@ class Sender extends BaseSender implements ISender
 	}
 
 	/**
-	 * @param  Message $message
 	 * @throws MissingParameterException
-	 * @return bool
 	 */
-	private function check(IMessage $message)
+	private function check(IMessage $message) : bool
 	{
 		if (empty($message->getFrom()))
 			throw new MissingParameterException('Message has empty sender. Use method setFrom().');

@@ -13,7 +13,7 @@ class MessageFactory implements IMessageFactory
 
 	/**
 	 * List of methods with values for Message
-	 * @var [type]
+	 * @var array
 	 */
 	public $params = [];
 

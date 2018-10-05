@@ -1,19 +1,14 @@
 RM\SMSender
 ==========
 
-[![Build Status](https://scrutinizer-ci.com/g/romanmatyus/SMSender/badges/build.png?b=master)](https://scrutinizer-ci.com/g/romanmatyus/SMSender/build-status/master)
+[![Build Status](https://travis-ci.org/romanmatyus/SMSender.svg?branch=master)](https://travis-ci.org/romanmatyus/SMSender)
 [![Code Quality](https://scrutinizer-ci.com/g/romanmatyus/SMSender/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/romanmatyus/SMSender/)
 [![Code Coverage](https://scrutinizer-ci.com/g/romanmatyus/SMSender/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/romanmatyus/SMSender/)
-[![Packagist](https://img.shields.io/packagist/v/rm/smsender.svg)](https://packagist.org/packages/rm/smsender)
+[![Latest Stable Version](https://img.shields.io/github/release/romanmatyus/SMSender.svg)](https://packagist.org/packages/rm/smsender)
+[![Latest Unstable Version](https://poser.pugx.org/rm/smsender/v/unstable)](https://packagist.org/packages/rm/smsender)
+[![License](https://poser.pugx.org/rm/smsender/license)](https://packagist.org/packages/rm/smsender)
 
-Component for sending SMS through service EuroSMS.sk.
-
-License: MIT
-
-Requirements
-------------
-- PHP 5.5
-- Nette 2.3 - https://github.com/nette/nette
+Component for sending SMS through service EuroSMS.sk for Nette.
 
 > Library is possible use too without Nette.
 

@@ -13,13 +13,13 @@ abstract class BaseSender implements ISender
 {
 	use SmartObject;
 
-	/** @var callable[] function (IMessage $message); Occurs before send SMS. */
+	/** @var array of function (IMessage $message); Occurs before send SMS. */
 	public $onBeforeSend;
 
-	/** @var callable[] function (IMessage $message, $response); Occurs after success send SMS. */
+	/** @var array of function (IMessage $message, $response); Occurs after success send SMS. */
 	public $onSuccess;
 
-	/** @var callable[] function (IMessage $message, $response); Occurs after failed send SMS. */
+	/** @var array of function (IMessage $message, $response); Occurs after failed send SMS. */
 	public $onError;
 
 	/** @var bool */
@@ -28,22 +28,15 @@ abstract class BaseSender implements ISender
 	/** @var GuzzleHttp\Client */
 	protected $httpClient;
 
-	/**
-	 * @param  bool $value
-	 * @return self
-	 */
-	public function setDebugMode($value)
+	public function setDebugMode(bool $value) : ISender
 	{
-		$this->debug = (bool) $value;
+		$this->debug = $value;
 		return $this;
 	}
 
-	/**
-	 * @return Guzzle\Client
-	 */
-	public function getHttpClient()
+	public function getHttpClient() : GuzzleHttp\Client
 	{
-		if ($this->httpClient)
+		if ($this->httpClient instanceof GuzzleHttp\Client)
 			return $this->httpClient;
 		$this->httpClient = new GuzzleHttp\Client;
 		return $this->httpClient;

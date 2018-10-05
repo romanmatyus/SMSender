@@ -4,33 +4,15 @@ namespace RM\SMSender;
 
 interface IMessage
 {
-	/**
-	 * @param string $from
-	 */
-	public function setFrom($from);
+	public function setFrom(string $from) : IMessage;
 
-	/**
-	 * @param string $number
-	 */
-	public function setTo($number);
+	public function setTo(string $number) : IMessage;
 
-	/**
-	 * @param string $text
-	 */
-	public function setText($text);
+	public function setText(string $text) : IMessage;
 
-	/**
-	 * @return string
-	 */
-	public function getFrom();
+	public function getFrom() : string;
 
-	/**
-	 * @return string
-	 */
-	public function getTo();
+	public function getTo() : string;
 
-	/**
-	 * @return string
-	 */
-	public function getText();
+	public function getText() : string;
 }
