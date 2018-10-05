@@ -24,7 +24,7 @@
 		"nette/di": "If you wanna use Nette DI extension"
 	},
 	"require-dev": {
-		"nette/di": "~2.3",
+		"nette/di": "~2.4",
 		"nette/bootstrap": "~2.3",
 		"nette/reflection": "~2.3",
 		"nette/neon": "~2.3",
