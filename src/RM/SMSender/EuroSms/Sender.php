@@ -28,6 +28,13 @@ class Sender extends BaseSender implements ISender
 	/** @var string */
 	private $key;
 
+
+	public function __construct(array $config = NULL)
+	{
+		if (is_array($config) && !empty($config))
+			$this->config($config);
+	}
+
 	/**
 	 * @param  array $config
 	 * @return self
