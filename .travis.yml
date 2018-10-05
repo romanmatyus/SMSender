@@ -16,6 +16,8 @@ php:
     - 5.5
     - 5.6
     - 7.0
+    - 7.1
+    - 7.2
     - hhvm
 
 matrix:
@@ -36,14 +38,14 @@ before_script:
     - php code-checker/src/code-checker.php -d tests
     - |
         printf "eurosms:\n\tid: $EUROSMSID\n\tkey: $EUROSMSKEY\n" > tests/secret.neon
-    - if [[ $TRAVIS_PHP_VERSION == '7.0' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then FLAGS="-d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src"; fi;
+    - if [[ $TRAVIS_PHP_VERSION == '7.2' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then FLAGS="-d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src"; fi;
 
 script:
     - vendor/bin/tester tests -s -p php -c tests/php-unix.ini $FLAGS
 
 after_script:
     - |
-        if [[ $TRAVIS_PHP_VERSION == '7.0' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then
+        if [[ $TRAVIS_PHP_VERSION == '7.2' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then
             wget https://scrutinizer-ci.com/ocular.phar
             php ocular.phar code-coverage:upload --format=php-clover coverage.xml
         fi
