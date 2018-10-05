@@ -2,7 +2,6 @@
 
 namespace RM\SMSender\EuroSms;
 
-use Nette\Object;
 use Nette\Utils\Strings;
 use RM\SMSender;
 use RM\SMSender\InvalidArgumentException;

@@ -3,14 +3,16 @@
 namespace RM\SMSender;
 
 use GuzzleHttp;
-use Nette\Object;
+use Nette\SmartObject;
 use Nette\Utils\Strings;
 
 /**
  * Base Sender
  */
-abstract class BaseSender extends Object implements ISender
+abstract class BaseSender implements ISender
 {
+	use SmartObject;
+
 	/** @var callable[] function (IMessage $message); Occurs before send SMS. */
 	public $onBeforeSend;
 

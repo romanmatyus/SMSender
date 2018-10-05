@@ -2,9 +2,9 @@
 
 namespace RM\SMSender;
 
-use Nette\Object;
+use Nette\Reflection\ClassType;
 
-class MessageFactory extends Object implements IMessageFactory
+class MessageFactory implements IMessageFactory
 {
 	/**
 	 * @var string
@@ -24,7 +24,7 @@ class MessageFactory extends Object implements IMessageFactory
 	{
 		$message = new $this->class;
 		foreach ($this->params as $method => $value) {
-			if ($message->getReflection()->hasMethod($method)) {
+			if ((new ClassType($message))->hasMethod($method)) {
 				$message->$method($value);
 			}
 		}

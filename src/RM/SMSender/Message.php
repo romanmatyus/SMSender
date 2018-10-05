@@ -2,13 +2,12 @@
 
 namespace RM\SMSender;
 
-use Nette\Object;
 use RM\SMSender\IMessage;
 
 /**
  * Basic implementation of Message.
  */
-class Message extends Object implements IMessage
+class Message implements IMessage
 {
 	/** @var string */
 	protected $from;
