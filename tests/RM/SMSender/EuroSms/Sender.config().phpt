@@ -8,6 +8,11 @@ use Tester\Assert;
 
 require __DIR__ . '/../../../bootstrap.php';
 
+Assert::true(new RM\SMSender\EuroSms\Sender([
+	'id' => '1-TB672G',
+	'key' => '5^Af-8Ss',
+]) instanceof RM\SMSender\EuroSms\Sender);
+
 $sender = new RM\SMSender\EuroSms\Sender;
 
 Assert::true($sender->config([
