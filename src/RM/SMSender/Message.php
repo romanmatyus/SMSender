@@ -18,21 +18,21 @@ class Message implements IMessage
 	/** @var string */
 	protected $text = '';
 
-	public function setFrom(string $from = NULL) : IMessage
+	public function setFrom(string $from = '') : IMessage
 	{
-		$this->from = (string) $from;
+		$this->from = $from;
 		return $this;
 	}
 
-	public function setTo(string $number = NULL) : IMessage
+	public function setTo(string $number = '') : IMessage
 	{
-		$this->to = (string) $number;
+		$this->to = $number;
 		return $this;
 	}
 
-	public function setText(string $text = NULL) : IMessage
+	public function setText(string $text = '') : IMessage
 	{
-		$this->text = (string) $text;
+		$this->text = $text;
 		return $this;
 	}
 
