@@ -36,9 +36,8 @@ abstract class BaseSender implements ISender
 
 	public function getHttpClient() : GuzzleHttp\Client
 	{
-		if ($this->httpClient instanceof GuzzleHttp\Client)
-			return $this->httpClient;
-		$this->httpClient = new GuzzleHttp\Client;
+		if (!($this->httpClient instanceof GuzzleHttp\Client))
+			$this->httpClient = new GuzzleHttp\Client;
 		return $this->httpClient;
 	}
 }
