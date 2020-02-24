@@ -42,11 +42,11 @@ $message = $container->getByType('RM\SMSender\IMessageFactory')->create();
 $message->setTo('+421900123456')
 	->setText('Text');
 
+$sender = $container->getByType('RM\SMSender\ISender');
 $sender->onSuccess[] = function ($message) {
 	Assert::same('Example.com', $message->getFrom());
-	Assert::same('+421900123456', $message->getTo());
+	Assert::same('421900123456', $message->getTo());
 	Assert::same('Text -- Example.com', $message->getText());
 };
 
-$sender = $container->getByType('RM\SMSender\ISender');
 Assert::true($sender->send($message));
