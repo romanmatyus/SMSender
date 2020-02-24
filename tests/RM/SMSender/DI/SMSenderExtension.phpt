@@ -8,6 +8,7 @@ use Nette\Neon\Neon;
 use Tester\Assert;
 
 require __DIR__ . '/../../../bootstrap.php';
+ini_set("error_reporting", E_ALL & ~E_DEPRECATED);
 
 $tempDir = __DIR__ . '/../../../temp';
 $tempConfig = $tempDir . '/config.neon';
