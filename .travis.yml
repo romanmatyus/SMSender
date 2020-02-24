@@ -34,7 +34,7 @@ install:
 before_script:
     - ./vendor/bin/parallel-lint -e php,phpt --exclude vendor .
     - ./vendor/bin/phpstan analyse -l 5 src tests
-    - composer create-project nette/code-checker code-checker ~2.3 --no-interaction --prefer-source
+    - composer create-project nette/code-checker code-checker ~3.1 --no-interaction --prefer-source
     - php code-checker/src/code-checker.php -d src
     - php code-checker/src/code-checker.php -d tests
     - |
