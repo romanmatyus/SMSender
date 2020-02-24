@@ -26,7 +26,7 @@ $val = $message->setText($text);
 Assert::true($val instanceof $message);
 
 Assert::same($from, $message->getFrom());
-Assert::same($to, $message->getTo());
+Assert::same('421940123456', $message->getTo());
 Assert::same($text, $message->getText());
 
 ### Set From ###
@@ -49,11 +49,11 @@ Assert::true($message->setTo('+421900123456') instanceof $message);
 ### Set Text ###
 
 Assert::exception(function() use ($message) {
-	$message->setText(Nette\Utils\Random::generate(161));
-}, 'RM\SMSender\InvalidArgumentException', 'Parameter "text" must be length 1-160 characters. Has 161 characters.');
+	$message->setText(Nette\Utils\Random::generate(460));
+}, 'RM\SMSender\InvalidArgumentException', 'Parameter "text" must be length 1-459 characters. Has 460 characters.');
 
 Assert::exception(function() use ($message) {
 	$message->setText('');
-}, 'RM\SMSender\InvalidArgumentException', 'Parameter "text" must be length 1-160 characters. Has 0 characters.');
+}, 'RM\SMSender\InvalidArgumentException', 'Parameter "text" must be length 1-459 characters. Has 0 characters.');
 
 Assert::true($message->setText('Hello world!') instanceof $message);

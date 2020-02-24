@@ -23,13 +23,13 @@ class Message extends SMSender\Message implements SMSender\IMessage
 	{
 		if (!Strings::match($number, '~^09\d{8}|\+?\d{12}$~'))
 			throw new InvalidArgumentException('Parameter "number" can use number in formats "09xxYYYYYY" or "+xxxYYYzzzzzz".');
-		return parent::setTo($number);
+		return parent::setTo(ltrim($number, '+'));
 	}
 
 	public function setText(string $text = '') : SMSender\IMessage
 	{
-		if (strlen($text) < 1 OR strlen($text) > 160)
-			throw new InvalidArgumentException('Parameter "text" must be length 1-160 characters. Has ' . strlen($text) . ' characters.');
+		if (strlen($text) < 1 OR strlen($text) > 459)
+			throw new InvalidArgumentException('Parameter "text" must be length 1-459 characters. Has ' . strlen($text) . ' characters.');
 		return parent::setText(Strings::toAscii($text));
 	}
 }

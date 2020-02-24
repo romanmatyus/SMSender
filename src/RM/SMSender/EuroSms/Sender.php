@@ -20,7 +20,7 @@ use RM\SMSender\MissingParameterException;
  */
 class Sender extends BaseSender implements ISender
 {
-	CONST URL = 'https://as.eurosms.com/sms/Sender';
+	CONST URL = 'https://as.eurosms.com/api/v2/Sender';
 
 	/** @var string */
 	private $id;
@@ -58,12 +58,12 @@ class Sender extends BaseSender implements ISender
 		$this->onBeforeSend($message);
 		$res = $this->getHttpClient()->request('GET', self::URL . '?' . str_replace(urlencode($message->getTo()), $message->getTo(), http_build_query([
 				'action' => ($this->debug ? 'validate' : 'send') . '1SMSHTTP',
-				'i' => $this->id,
-				's' => $this->getSignature($message),
-				'd' => 1,
-				'sender' => $message->getFrom(),
-				'number' => $message->getTo(),
-				'msg' => $message->getText(),
+				'iid' => $this->id,
+				'signature' => $this->getSignature($message),
+				'from' => $message->getFrom(),
+				'to' => $message->getTo(),
+				'message' => $message->getText(),
+				'flags' => 0x002,
 			])));
 		$response = $res->getBody();
 		if ($this->isSuccess($response)) {
@@ -80,13 +80,12 @@ class Sender extends BaseSender implements ISender
 
 	public function getSignature(IMessage $message) : string
 	{
-		return substr(md5($this->key . str_replace('+', '', $message->getTo())), 10, 11);
+		return hash_hmac('sha1', $message->getFrom() . $message->getTo() . $message->getText(), $this->key);
 	}
 
 	public function isSuccess(string $response)
 	{
-		$response = Strings::trim($response);
-		return ($this->debug && $response === 'SMSValid') || (!$this->debug && substr($response, 0, 2) === 'ok');
+		return ($this->debug && Strings::startsWith($response, 'VALID_REQUEST')) || Strings::startsWith($response, 'ENQUEUED');
 	}
 
 	/**
@@ -97,10 +96,10 @@ class Sender extends BaseSender implements ISender
 	 */
 	private function checkConfig($id, $key)
 	{
-		if (!Strings::match($id, '~^1-[0-9a-zA-Z]{6}$~'))
-			throw new ConfigurationException('Parameter "id" must be in format "1-[0-9a-zA-Z]{6}".');
-		if (strlen($key) !== 8)
-			throw new ConfigurationException('Parameter "key" must have 8 charactest. It has ' . strlen($key) . ' characters.');
+		if (!Strings::match($id, '~^\d-[0-9a-zA-Z]{6}$~'))
+			throw new ConfigurationException('Parameter "id" must be in format "\d-[0-9a-zA-Z]{6}".');
+		if (strlen($key) !== 8 && strlen($key) !== 9)
+			throw new ConfigurationException('Parameter "key" must have 8 or 9 characters. It has ' . strlen($key) . ' characters.');
 		return TRUE;
 	}
 

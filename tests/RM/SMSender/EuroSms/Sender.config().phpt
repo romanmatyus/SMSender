@@ -25,11 +25,11 @@ Assert::exception(function() use ($sender) {
 		'id' => 'anyid',
 		'key' => Nette\Utils\Random::generate(7),
 	]);
-}, 'RM\SMSender\ConfigurationException', 'Parameter "id" must be in format "1-[0-9a-zA-Z]{6}".');
+}, 'RM\SMSender\ConfigurationException', 'Parameter "id" must be in format "\d-[0-9a-zA-Z]{6}".');
 
 Assert::exception(function() use ($sender) {
 	$sender->config([
 		'id' => '1-TB672G',
 		'key' => Nette\Utils\Random::generate(7),
 	]);
-}, 'RM\SMSender\ConfigurationException', 'Parameter "key" must have 8 charactest. It has 7 characters.');
+}, 'RM\SMSender\ConfigurationException', 'Parameter "key" must have 8 or 9 characters. It has 7 characters.');

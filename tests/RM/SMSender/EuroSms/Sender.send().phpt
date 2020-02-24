@@ -14,7 +14,7 @@ $message = new RM\SMSender\EuroSms\Message;
 $config = Neon::decode(file_get_contents(__DIR__ . '/../../../secret.neon'));
 
 $sender = new RM\SMSender\EuroSms\Sender;
-$sender->setDebugMode(TRUE);
+$sender->setDebugMode(true);
 $sender->config([
 	'id' => '1-JA67XG',
 	'key' => '12345678',
@@ -38,15 +38,12 @@ Assert::exception(function() use ($sender, $message) {
 
 $message->setText('Text');
 
+$sender->setDebugMode(false);
 Assert::exception(function() use ($sender, $message) {
 	$sender->send($message);
-}, 'RM\SMSender\GatewayException', 'BadSignature');
+}, 'RM\SMSender\GatewayException');
 
 $sender->config($config['eurosms']);
 
+$sender->setDebugMode(true);
 Assert::true($sender->send($message));
-
-$sender->setDebugMode(FALSE);
-Assert::exception(function() use ($sender, $message) {
-	$sender->send($message);
-}, 'RM\SMSender\GatewayException', 'WrongPhoneNumber|Phone num. 421900123456 is bad. Expected international format: +421988123456.');
