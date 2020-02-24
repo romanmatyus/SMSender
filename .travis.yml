@@ -23,6 +23,8 @@ php:
 matrix:
     allow_failures:
         - php: hhvm
+        - php: 7.4
+          env: COMPOSER_EXTRA_ARGS="--prefer-lowest  --prefer-stable"
 
 before_install:
     - composer self-update
