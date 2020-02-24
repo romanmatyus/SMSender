@@ -34,7 +34,8 @@ install:
 before_script:
     - ./vendor/bin/parallel-lint -e php,phpt --exclude vendor .
     - ./vendor/bin/phpstan analyse -l 5 src tests
-    - composer create-project nette/code-checker code-checker ~3.1 --no-interaction --prefer-source
+    - if [[ $TRAVIS_PHP_VERSION == '7.0' ]]; then CODE_CHECKER_VERSION="~2.13"; else CODE_CHECKER_VERSION="~3.1"; fi;
+    - composer create-project nette/code-checker code-checker $CODE_CHECKER_VERSION --no-interaction --prefer-source
     - php code-checker/src/code-checker.php -d src
     - php code-checker/src/code-checker.php -d tests
     - |
