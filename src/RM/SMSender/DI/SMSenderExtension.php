@@ -2,7 +2,7 @@
 
 namespace RM\SMSender\DI;
 
-use Nette\Reflection\ClassType;
+use ReflectionClass;
 use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
@@ -37,7 +37,7 @@ class SMSenderExtension extends CompilerExtension
 
 		foreach ($config as $method => $value) {
 			$tmp = new $config['senderClass'];
-			if ((new ClassType($tmp))->hasMethod($method)) {
+			if ((new ReflectionClass($tmp))->hasMethod($method)) {
 				$sender->addSetup($method, [$value]);
 			}
 		}

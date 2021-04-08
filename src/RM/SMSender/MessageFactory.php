@@ -2,7 +2,7 @@
 
 namespace RM\SMSender;
 
-use Nette\Reflection\ClassType;
+use ReflectionClass;
 
 class MessageFactory implements IMessageFactory
 {
@@ -24,7 +24,7 @@ class MessageFactory implements IMessageFactory
 	{
 		$message = new $this->class;
 		foreach ($this->params as $method => $value) {
-			if ((new ClassType($message))->hasMethod($method)) {
+			if ((new ReflectionClass($message))->hasMethod($method)) {
 				$message->$method($value);
 			}
 		}
