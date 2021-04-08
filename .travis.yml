@@ -18,12 +18,12 @@ php:
     - 7.2
     - 7.3
     - 7.4
+    - 8.0
     - hhvm
 
 matrix:
     allow_failures:
         - php: hhvm
-        - php: 7.4
           env: COMPOSER_EXTRA_ARGS="--prefer-lowest  --prefer-stable"
 
 before_install:
@@ -42,7 +42,7 @@ before_script:
     - php code-checker/src/code-checker.php -d tests
     - |
         printf "eurosms:\n\tid: $EUROSMSID\n\tkey: $EUROSMSKEY\n" > tests/secret.neon
-    - if [[ $TRAVIS_PHP_VERSION == '7.4' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then FLAGS="-d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src"; fi;
+    - if [[ $TRAVIS_PHP_VERSION == '8.0' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then FLAGS="-d zend_extension=xdebug.so --coverage coverage.xml --coverage-src src"; fi;
 
 script:
     - vendor/bin/tester tests -s -p php -c tests/php-unix.ini $FLAGS
@@ -50,7 +50,7 @@ script:
 after_script:
     - curl https://github.com/romanmatyus/SMSender | grep -o '<img[ ]*src="[^"]*"' | grep -o '"[^"]*"' | grep -o '[^"]*' | grep https://camo.githubusercontent.com | xargs -L1 curl -X PURGE
     - |
-        if [[ $TRAVIS_PHP_VERSION == '7.4' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then
+        if [[ $TRAVIS_PHP_VERSION == '8.0' ]] && [[ $COMPOSER_EXTRA_ARGS == '' ]]; then
             wget https://scrutinizer-ci.com/ocular.phar
             php ocular.phar code-coverage:upload --format=php-clover coverage.xml
         fi
