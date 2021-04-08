@@ -23,7 +23,8 @@ $ composer require rm/smsender
 Minimal example
 ---------------
 
-### Pure PHP
+### Pure PHP
+
 
 ```php
 $message = new RM\SMSender\Message;
@@ -89,7 +90,7 @@ class SmsPresenter extends Presenter
 		$message = $this->messageFactory->create();
 		$message->setFrom('Example.com')
 			->setTo($to)
-			->setMessage($text);
+			->setText($text);
 		try {
 			$this->SMSender->send($message);
 		} catch (RM\SMSender\Exception $e) {}
