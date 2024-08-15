@@ -21,7 +21,7 @@ class Message extends SMSender\Message implements SMSender\IMessage
 
 	public function setTo(string $number = '') : SMSender\IMessage
 	{
-		if (!Strings::match($number, '~^09\d{8}|\+?\d{12}$~'))
+		if (!Strings::match($number, '~^09\d{8}|\+?\d{11,12}$~'))
 			throw new InvalidArgumentException('Parameter "number" can use number in formats "09xxYYYYYY" or "+xxxYYYzzzzzz".');
 		return parent::setTo(ltrim($number, '+'));
 	}
