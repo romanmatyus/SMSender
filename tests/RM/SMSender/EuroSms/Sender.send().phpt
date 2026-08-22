@@ -4,14 +4,11 @@
  * Test: EuroSms\Message
  */
 
-use Nette\Neon\Neon;
 use Tester\Assert;
 
 require __DIR__ . '/../../../bootstrap.php';
 
 $message = new RM\SMSender\EuroSms\Message;
-
-$config = Neon::decode(file_get_contents(__DIR__ . '/../../../secret.neon'));
 
 $sender = new RM\SMSender\EuroSms\Sender;
 $sender->setDebugMode(true);
@@ -43,6 +40,7 @@ Assert::exception(function() use ($sender, $message) {
 	$sender->send($message);
 }, 'RM\SMSender\GatewayException');
 
+$config = getSecretConfig();
 $sender->config($config['eurosms']);
 
 $sender->setDebugMode(true);
