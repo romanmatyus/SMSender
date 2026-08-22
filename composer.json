@@ -16,6 +16,8 @@
 		"issues": "https://github.com/romanmatyus/SMSender/issues"
 	},
 	"require": {
+		"php": ">=7.1",
+		"ext-intl": "*",
 		"guzzlehttp/guzzle": ">=6.3",
 		"nette/utils": ">=2.4"
 	},
@@ -29,8 +31,8 @@
 		"nette/di": ">=2.4",
 		"nette/bootstrap": ">=2.4",
 		"nette/neon": ">=2.4",
-		"nette/tester": ">=1.7",
-		"jakub-onderka/php-parallel-lint": "~1.0"
+		"nette/tester": ">=2.0",
+		"php-parallel-lint/php-parallel-lint": "^1.0"
 	},
 	"autoload": {
 		"psr-0": {
@@ -39,5 +41,10 @@
 		"classmap": [
 			"src/RM/SMSender/exceptions.php"
 		]
+	},
+	"scripts": {
+		"tester": "tester tests -s -C",
+		"phpstan": "phpstan analyse",
+		"lint": "parallel-lint -e php,phpt --exclude vendor ."
 	}
 }

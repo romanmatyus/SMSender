@@ -15,7 +15,7 @@ $tempConfig = $tempDir . '/config.neon';
 
 @mkdir($tempDir);
 
-$config = Neon::decode(file_get_contents(__DIR__ . '/../../../secret.neon'));
+$config = getSecretConfig();
 file_put_contents($tempConfig, Neon::encode([
 	'smsender' => [
 		'config' => [

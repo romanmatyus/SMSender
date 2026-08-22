@@ -25,7 +25,7 @@ abstract class BaseSender implements ISender
 	/** @var bool */
 	protected $debug = FALSE;
 
-	/** @var GuzzleHttp\Client */
+	/** @var GuzzleHttp\Client|NULL */
 	protected $httpClient;
 
 	public function setDebugMode(bool $value) : ISender

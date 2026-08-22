@@ -4,7 +4,6 @@
  * Test: EuroSms\Message
  */
 
-use Nette\Neon\Neon;
 use Tester\Assert;
 
 require __DIR__ . '/../../../bootstrap.php';
@@ -14,7 +13,7 @@ $message->setFrom('Tester')
 	->setTo('+421900123456')
 	->setText('Text');
 
-$config = Neon::decode(file_get_contents(__DIR__ . '/../../../secret.neon'));
+$config = getSecretConfig();
 
 $sender = new RM\SMSender\EuroSms\Sender;
 $sender->setDebugMode(TRUE)

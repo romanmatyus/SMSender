@@ -29,7 +29,7 @@ class Sender extends BaseSender implements ISender
 	private $key;
 
 
-	public function __construct(array $config = NULL)
+	public function __construct(?array $config = NULL)
 	{
 		if (is_array($config) && !empty($config))
 			$this->config($config);

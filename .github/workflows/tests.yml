@@ -1,0 +1,134 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }} (${{ matrix.dependencies }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+        dependencies: [highest]
+        include:
+          # The declared dependency floor (nette 2.4, tester 2.0) only runs on the oldest
+          # supported PHP - those releases are not compatible with PHP 8.
+          - php: '7.1'
+            dependencies: lowest
+
+    env:
+      # Code coverage is generated on the newest supported PHP only.
+      COVERAGE: ${{ matrix.php == '8.5' && matrix.dependencies == 'highest' && 'yes' || 'no' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: intl, iconv, json, mbstring, tokenizer
+          coverage: ${{ matrix.php == '8.5' && matrix.dependencies == 'highest' && 'pcov' || 'none' }}
+          ini-values: date.timezone=Europe/Bratislava
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: '--prefer-dist'
+
+      # Secrets are not exposed to pull requests coming from forks. Tests that talk to the
+      # EuroSMS gateway skip themselves when tests/secret.neon is missing.
+      - name: Create tests/secret.neon
+        env:
+          EUROSMS_ID: ${{ secrets.EUROSMS_ID }}
+          EUROSMS_KEY: ${{ secrets.EUROSMS_KEY }}
+        run: |
+          if [ -n "$EUROSMS_ID" ] && [ -n "$EUROSMS_KEY" ]; then
+            printf 'eurosms:\n\tid: %s\n\tkey: %s\n' "$EUROSMS_ID" "$EUROSMS_KEY" > tests/secret.neon
+            echo "::notice::EuroSMS credentials configured, gateway tests will run."
+          else
+            echo "::notice::EuroSMS credentials not available, gateway tests will be skipped."
+          fi
+
+      - name: Run tests
+        if: env.COVERAGE == 'no'
+        run: vendor/bin/tester tests -s -C -p php
+
+      - name: Run tests with code coverage
+        if: env.COVERAGE == 'yes'
+        run: vendor/bin/tester tests -s -C -p php --coverage coverage.xml --coverage-src src
+
+      - name: Print output of failed tests
+        if: failure()
+        run: for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
+
+      - name: Upload coverage artifact
+        if: env.COVERAGE == 'yes'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.xml
+
+      # Runs after the artifact upload so the report is downloadable even when the gate fails.
+      - name: Check code coverage threshold
+        if: env.COVERAGE == 'yes'
+        env:
+          THRESHOLD: '95'
+        run: |
+          php -r '
+            $m = simplexml_load_file("coverage.xml")->project->metrics;
+            $total = (int) $m["elements"];
+            $pct = $total ? round((int) $m["coveredelements"] / $total * 100, 2) : 0;
+            $min = (float) getenv("THRESHOLD");
+            printf("Code coverage: %s%% (required at least %s%%)\n", $pct, $min);
+            if ($pct < $min) {
+              printf("::error::Code coverage %s%% is below the required %s%%\n", $pct, $min);
+              exit(1);
+            }
+          '
+
+  static:
+    name: Static analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: intl, iconv, json, mbstring, tokenizer
+          coverage: none
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: highest
+          composer-options: '--prefer-dist'
+
+      - name: Lint
+        run: vendor/bin/parallel-lint -e php,phpt --exclude vendor .
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress
+
+      - name: Install Nette CodeChecker
+        run: composer create-project nette/code-checker code-checker '~3.3.0' --no-interaction --prefer-dist --quiet
+
+      - name: CodeChecker
+        run: |
+          php code-checker/code-checker -d src
+          php code-checker/code-checker -d tests
