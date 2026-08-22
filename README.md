@@ -12,7 +12,6 @@ Supported PHP: 7.1 - 8.5.
 
 > Library is possible use too without Nette.
 
-
 Installation
 -----------
 
