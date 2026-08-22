@@ -4,4 +4,5 @@ parameters:
 		- src
 		- tests
 	excludePaths:
-		- tests/temp
+		# only exists after the test suite has run
+		- tests/temp (?)
